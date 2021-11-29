@@ -1,0 +1,30 @@
+name: Build Slides
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-slides:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout files
+      uses: actions/checkout@master
+    - name: Convert slides
+      run: |
+        wget -qc https://github.com/marp-team/marp-cli/releases/download/v0.23.0/marp-cli-v0.23.0-linux.tar.gz -O - | tar -xz
+        mkdir -p output
+        ./marp --input-dir . --output output --html
+        ./marp --input-dir . --output output --pdf
+    - name: Commit new files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add output
+        git commit -m "build slides"
+    - name: Push changes to gh-pages
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        force: true
