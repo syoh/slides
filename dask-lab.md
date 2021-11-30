@@ -300,7 +300,7 @@ EOF
 * Run `examples/05-nyc-taxi.ipynb` (will break). Check why with `kubectl`
     ```bash
     kubectl get all                                 # what do you notice?
-    kubectl describe [pod/my-dask-worker-00000]     # evicted resource name??
+    kubectl describe [pod/my-dask-worker-00000]     # evicted resource name
     ```
 
 ---
